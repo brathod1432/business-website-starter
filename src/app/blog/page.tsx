@@ -10,12 +10,18 @@ import { getBlogPosts } from '@/content/blog';
 import { buildMetadata } from '@/lib/seo';
 import { formatDate } from '@/lib/utils';
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Blog',
-  description:
-    'Practical insights on web performance, design, growth, and engineering from the team at our studio.',
-  path: '/blog',
-});
+export const metadata: Metadata = {
+  ...buildMetadata({
+    title: 'Blog',
+    description:
+      'Practical insights on web performance, design, growth, and engineering from the team at our studio.',
+    path: '/blog',
+  }),
+  alternates: {
+    canonical: '/blog',
+    types: { 'application/rss+xml': '/feed.xml' },
+  },
+};
 
 export default function BlogPage() {
   const posts = getBlogPosts();

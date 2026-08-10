@@ -18,9 +18,9 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms",
-  "connect-src 'self' https://www.google-analytics.com https://*.clarity.ms https://*.google-analytics.com",
-  "frame-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://challenges.cloudflare.com",
+  "connect-src 'self' https://www.google-analytics.com https://*.clarity.ms https://*.google-analytics.com https://challenges.cloudflare.com",
+  "frame-src 'self' https://challenges.cloudflare.com",
   'upgrade-insecure-requests',
 ]
   .join('; ')

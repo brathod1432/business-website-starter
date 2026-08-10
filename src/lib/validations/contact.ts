@@ -34,6 +34,8 @@ export const contactFormSchema = z.object({
     .max(2000, { message: 'Message is too long.' }),
   /** Honeypot field for basic spam prevention — must stay empty. */
   website: z.string().max(0, { message: 'Spam detected.' }).optional().or(z.literal('')),
+  /** Cloudflare Turnstile token (only present when the widget is enabled). */
+  turnstileToken: z.string().optional(),
 });
 
 export type ContactFormValues = z.infer<typeof contactFormSchema>;

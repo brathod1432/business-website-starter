@@ -11,6 +11,8 @@ and more.
 > Re-brand the entire site by editing two files: `src/lib/site-config.ts` (content) and
 > `src/styles/globals.css` (design tokens).
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/brathod1432/business-website-starter&env=NEXT_PUBLIC_SITE_URL&envDescription=Canonical%20site%20URL%20used%20for%20metadata%2C%20sitemap%2C%20and%20OG%20tags)
+
 ## Overview
 
 - Conversion-focused homepage with 10+ composable sections.
@@ -33,7 +35,10 @@ and more.
 | Sections   | Hero, Client Logos, Services, Why Choose Us, Process, Metrics, Testimonials, Industries, FAQ, CTA, Contact |
 | Dark mode  | System-aware theme with a header toggle (`next-themes`)                                                    |
 | Forms      | React Hook Form + Zod, shared client/server schema, honeypot + rate limiting, success/error states         |
-| Lead gen   | Contact form + newsletter signup (mock APIs, ready to wire to a provider)                                  |
+| Lead gen   | Contact form + newsletter signup with **real email delivery** (Resend) + simulated fallback                |
+| Email      | Provider-agnostic `sendEmail` (no SDK dep); set `RESEND_API_KEY` + `EMAIL_FROM` to go live                 |
+| Anti-spam  | Honeypots + IP rate limiting + optional Cloudflare Turnstile CAPTCHA (env-gated)                           |
+| Feeds/Ops  | RSS at `/feed.xml`, `/api/health`, `/.well-known/security.txt`                                             |
 | Content    | Repository pattern (`getServices`, `getBlogPostBySlug`, …) ready for a headless CMS                        |
 | SEO        | `buildMetadata()` helper, JSON-LD components, sitemap/robots, dynamic OG image route                       |
 | Privacy    | Cookie consent banner; analytics load only after opt-in                                                    |

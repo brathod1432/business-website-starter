@@ -8,6 +8,7 @@ import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { trackEvent } from '@/lib/analytics-events';
 import { newsletterSchema, type NewsletterValues } from '@/lib/validations/newsletter';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -33,6 +34,7 @@ export function Newsletter() {
         body: JSON.stringify(values),
       });
       if (!res.ok) throw new Error('failed');
+      trackEvent('newsletter_subscribe', { form: 'newsletter' });
       setStatus('success');
       reset();
     } catch {

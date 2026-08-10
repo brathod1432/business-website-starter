@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
 
+import { escapeHtml, sendEmail } from '@/lib/email';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import { verifyTurnstile } from '@/lib/turnstile';
 import { contactFormSchema } from '@/lib/validations/contact';
 
 /**
- * Mock contact endpoint (Phase 10).
+ * Contact endpoint (Phase 10).
  *
- * Validates with the same Zod schema as the client, rate-limits by IP, applies
- * a honeypot spam check, and simulates a provider call. To go live, replace the
- * "simulate delivery" block with a real integration (Resend, SendGrid,
- * Formspree, a CRM webhook, etc.).
+ * Rate-limits by IP, validates with the shared Zod schema, checks a honeypot,
+ * optionally verifies a Cloudflare Turnstile token, then delivers via the email
+ * provider (Resend if configured, otherwise a simulated send). Set
+ * `RESEND_API_KEY`, `EMAIL_FROM`, and `CONTACT_TO_EMAIL` to go live.
  */
 export async function POST(request: Request) {
-  // Abuse protection: cap submissions per IP per minute.
   const ip = getClientIp(request);
   const limit = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 });
   if (!limit.success) {
@@ -37,17 +38,45 @@ export async function POST(request: Request) {
     );
   }
 
+  const data = parsed.data;
+
   // Honeypot tripped — silently accept to avoid tipping off bots.
-  if (parsed.data.website) {
+  if (data.website) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  // --- Simulate delivery to a provider ---------------------------------
-  // Swap this block for a real email/CRM integration in production.
-  await new Promise((resolve) => setTimeout(resolve, 400));
-  // eslint-disable-next-line no-console
-  console.info('[contact] new submission from', parsed.data.email);
-  // ---------------------------------------------------------------------
+  // Optional CAPTCHA (no-op unless TURNSTILE_SECRET_KEY is set).
+  const humanVerified = await verifyTurnstile(data.turnstileToken, ip);
+  if (!humanVerified) {
+    return NextResponse.json({ error: 'Verification failed. Please try again.' }, { status: 400 });
+  }
+
+  const to = process.env.CONTACT_TO_EMAIL ?? process.env.EMAIL_FROM ?? '';
+  const result = to
+    ? await sendEmail({
+        to,
+        replyTo: data.email,
+        subject: `New contact form submission from ${data.name}`,
+        html: `
+          <h2>New contact submission</h2>
+          <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+          ${data.company ? `<p><strong>Company:</strong> ${escapeHtml(data.company)}</p>` : ''}
+          ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ''}
+          <p><strong>Message:</strong></p>
+          <p>${escapeHtml(data.message).replace(/\n/g, '<br/>')}</p>
+        `,
+      })
+    : { delivered: false, simulated: true };
+
+  if (result.error) {
+    // eslint-disable-next-line no-console
+    console.error('[contact] delivery error:', result.error);
+    return NextResponse.json(
+      { error: 'We could not send your message right now. Please try again later.' },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({ ok: true, message: 'Message received.' }, { status: 200 });
 }

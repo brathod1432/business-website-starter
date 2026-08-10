@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: post.title,
     description: post.excerpt,
     path: `/blog/${post.slug}`,
+    image: `/og?title=${encodeURIComponent(post.title)}`,
     type: 'article',
     publishedTime: post.publishedAt,
     authors: [post.author],

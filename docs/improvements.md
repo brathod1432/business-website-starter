@@ -124,9 +124,74 @@ credible, contributable, and safe to maintain over time.
 
 ---
 
+## Round 2 — making it genuinely production-usable
+
+The first pass made the starter _safe_ to ship. This round makes it _actually work_ for a real
+client the moment they add a couple of env vars — no code changes required.
+
+### Real email delivery (the #1 practical gap)
+
+Forms previously only simulated delivery. Now `src/lib/email.ts` sends real email via **Resend**
+(using `fetch`, **no SDK dependency**) whenever `RESEND_API_KEY` + `EMAIL_FROM` are set, and
+falls back to the simulated send otherwise. The contact route emails `CONTACT_TO_EMAIL` with a
+sanitized (`escapeHtml`) body and sets `reply_to` to the sender; the newsletter route notifies the
+same address. **Why it matters:** leads reach the inbox with one env var — the difference between a
+demo and a working site.
+
+### Spam protection that scales (optional CAPTCHA)
+
+Added **Cloudflare Turnstile**, fully env-gated. Set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` +
+`TURNSTILE_SECRET_KEY` to render the widget (`src/components/security/turnstile.tsx`) and verify
+tokens server-side (`src/lib/turnstile.ts`); leave them blank and the honeypot still runs. CSP was
+extended for the Turnstile origins. **Why it matters:** honeypots stop naive bots; a CAPTCHA stops
+the rest — without punishing real users.
+
+### Richer SEO & distribution
+
+- **Per-page dynamic OG images** — blog posts, services, and case studies now generate a branded
+  social card via `/og?title=…`, so shared links look intentional.
+- **RSS feed** at `/feed.xml` (linked from the blog `<head>`) — lets readers and aggregators
+  subscribe; a standard expectation for any content marketing site.
+
+### Operations & trust
+
+- **Health check** at `/api/health` for uptime monitors and load balancers.
+- **`/.well-known/security.txt`** (RFC 9116) so researchers know how to report issues.
+- **Consent-aware conversion tracking** — `trackEvent()` fires `contact_form_submit` and
+  `newsletter_subscribe` only after analytics has loaded (i.e. after consent), so marketing can
+  measure ROI without breaking privacy.
+
+### One-click deploy
+
+A **Deploy to Vercel** button in the README gets a non-technical client live in minutes.
+
+> All Round 2 features are **off by default** and activate purely through environment variables, so
+> the zero-config developer experience is unchanged while the production ceiling is much higher.
+
+---
+
+## Backlog (updated)
+
+Delivered since the report was written: real email delivery, CAPTCHA, RSS, per-page OG images,
+health check, security.txt, conversion tracking, one-click deploy.
+
+Still open, by priority:
+
+| Priority | Improvement                                                       | User value                     |
+| -------- | ----------------------------------------------------------------- | ------------------------------ |
+| High     | Internationalization (i18n) + locale routing                      | Serve non-English markets      |
+| High     | Blog: MDX authoring, categories/tags filtering, related posts     | Content marketing that scales  |
+| Medium   | CMS adapter reference (Sanity/Contentful) wired to the repo layer | Non-devs edit content          |
+| Medium   | Search (blog / site)                                              | Findability on large sites     |
+| Medium   | Storybook + Playwright E2E / visual regression                    | Faster, safer UI iteration     |
+| Low      | Pagination, data-driven carousels, booking/calendar embed         | Polish as content/traffic grow |
+
+---
+
 ## Summary
 
-This pass moved the starter from "great demo" to "safe to ship for a real client":
-privacy-compliant analytics, hardened security headers and abuse protection, dark mode,
-lead capture, resilience boundaries, PWA basics, and a credible open-source/CI foundation —
-all verified by the existing lint/typecheck/test/build gates.
+Across both passes the starter went from "great demo" to "safe to ship" to "**working product a
+client can run**": privacy-compliant analytics, hardened security (CSP/HSTS, rate limiting,
+CAPTCHA, honeypots), real email delivery, dark mode, lead capture, RSS + rich social cards,
+health/security endpoints, resilience boundaries, PWA basics, one-click deploy, and a credible
+open-source/CI foundation — all verified by the lint/typecheck/test/build gates (78 tests).

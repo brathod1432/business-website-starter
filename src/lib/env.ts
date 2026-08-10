@@ -19,12 +19,14 @@ const envSchema = z.object({
     .regex(/^[a-z0-9]+$/i, 'Expected a Clarity project id')
     .optional()
     .or(z.literal('')),
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional().or(z.literal('')),
 });
 
 const parsed = envSchema.safeParse({
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
   NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
 });
 
 if (!parsed.success) {
@@ -37,6 +39,7 @@ export const env = {
   siteUrl: parsed.data.NEXT_PUBLIC_SITE_URL,
   gaMeasurementId: parsed.data.NEXT_PUBLIC_GA_MEASUREMENT_ID || undefined,
   clarityProjectId: parsed.data.NEXT_PUBLIC_CLARITY_PROJECT_ID || undefined,
+  turnstileSiteKey: parsed.data.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined,
   isAnalyticsConfigured:
     Boolean(parsed.data.NEXT_PUBLIC_GA_MEASUREMENT_ID) ||
     Boolean(parsed.data.NEXT_PUBLIC_CLARITY_PROJECT_ID),

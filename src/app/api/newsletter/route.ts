@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
 
+import { escapeHtml, sendEmail } from '@/lib/email';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
 import { newsletterSchema } from '@/lib/validations/newsletter';
 
 /**
- * Mock newsletter subscription endpoint.
- * Swap the "simulate subscription" block for a real provider (Mailchimp,
- * ConvertKit, Resend Audiences, Beehiiv, etc.).
+ * Newsletter subscription endpoint.
+ *
+ * Sends a notification via the email provider (Resend if configured, otherwise
+ * a simulated send). For a full subscriber list, swap `sendEmail` for a list
+ * provider (Mailchimp, ConvertKit, Resend Audiences, Beehiiv, etc.).
  */
 export async function POST(request: Request) {
   const ip = getClientIp(request);
@@ -35,11 +38,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  // --- Simulate subscription ------------------------------------------
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  // eslint-disable-next-line no-console
-  console.info('[newsletter] new subscriber', parsed.data.email);
-  // --------------------------------------------------------------------
+  const to = process.env.CONTACT_TO_EMAIL ?? process.env.EMAIL_FROM;
+  if (to) {
+    const result = await sendEmail({
+      to,
+      subject: 'New newsletter subscriber',
+      html: `<p>New subscriber: <strong>${escapeHtml(parsed.data.email)}</strong></p>`,
+    });
+    if (result.error) {
+      // eslint-disable-next-line no-console
+      console.error('[newsletter] delivery error:', result.error);
+    }
+  } else {
+    // eslint-disable-next-line no-console
+    console.info('[newsletter] new subscriber (simulated)', parsed.data.email);
+  }
 
   return NextResponse.json({ ok: true, message: 'Subscribed.' }, { status: 200 });
 }

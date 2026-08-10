@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { getTurnstileToken, TurnstileWidget } from '@/components/security/turnstile';
+import { trackEvent } from '@/lib/analytics-events';
 import { contactFormSchema, type ContactFormValues } from '@/lib/validations/contact';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -34,12 +36,13 @@ export function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, turnstileToken: getTurnstileToken() }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => null)) as { error?: string } | null;
         throw new Error(data?.error ?? 'Something went wrong. Please try again.');
       }
+      trackEvent('contact_form_submit', { form: 'contact' });
       setStatus('success');
       reset();
     } catch (err) {
@@ -127,6 +130,8 @@ export function ContactForm() {
           {...register('message')}
         />
       </Field>
+
+      <TurnstileWidget />
 
       {status === 'error' && serverError ? (
         <p role="alert" className="text-sm text-destructive">

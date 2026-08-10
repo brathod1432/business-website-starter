@@ -3,6 +3,25 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.0] - 2026-08-10
+
+### Added
+
+- **Real email delivery** via Resend (`fetch`-based, no SDK dependency) with an automatic
+  simulated fallback — wired into the contact and newsletter routes (`src/lib/email.ts`).
+- **Cloudflare Turnstile** CAPTCHA (optional, env-gated) with client widget and server-side
+  verification (`src/lib/turnstile.ts`, `src/components/security/turnstile.tsx`).
+- **Per-page dynamic OG images** for blog posts, services, and case studies (`/og?title=…`).
+- **RSS feed** at `/feed.xml`, linked from the blog `<head>`.
+- **Health check** endpoint at `/api/health` and **`/.well-known/security.txt`** (RFC 9116).
+- **Consent-aware conversion tracking** (`trackEvent`) on contact and newsletter submissions.
+- **Deploy to Vercel** button and expanded environment documentation.
+
+### Changed
+
+- CSP extended to allow Cloudflare Turnstile origins.
+- `.env.example` documents email + Turnstile variables.
+
 ## [1.1.0] - 2026-08-10
 
 ### Added

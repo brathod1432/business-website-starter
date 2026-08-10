@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: study.title,
     description: study.summary,
     path: `/case-studies/${study.slug}`,
+    image: `/og?title=${encodeURIComponent(study.title)}`,
   });
 }
 

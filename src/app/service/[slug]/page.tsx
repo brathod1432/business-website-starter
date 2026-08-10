@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: service.title,
     description: service.summary,
     path: `/service/${service.slug}`,
+    image: `/og?title=${encodeURIComponent(service.title)}`,
   });
 }
 

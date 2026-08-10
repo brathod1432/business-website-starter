@@ -30,14 +30,20 @@ Copy the example file and fill in values as needed:
 cp .env.example .env.local          # PowerShell: Copy-Item .env.example .env.local
 ```
 
-| Variable                         | Required    | Description                                                                                        |
-| -------------------------------- | ----------- | -------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`           | Recommended | Canonical base URL for metadata, sitemap, OG, canonical tags. Defaults to `http://localhost:3000`. |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID`  | Optional    | Google Analytics 4 ID (`G-XXXXXXXXXX`). Blank disables GA.                                         |
-| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Optional    | Microsoft Clarity project ID. Blank disables Clarity.                                              |
-| `CONTACT_FORM_ENDPOINT`          | Optional    | Contact submission endpoint. Defaults to the built-in mock route.                                  |
+| Variable                         | Required     | Description                                                                                        |
+| -------------------------------- | ------------ | -------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Recommended  | Canonical base URL for metadata, sitemap, OG, canonical tags. Defaults to `http://localhost:3000`. |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID`  | Optional     | Google Analytics 4 ID (`G-XXXXXXXXXX`). Blank disables GA.                                         |
+| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Optional     | Microsoft Clarity project ID. Blank disables Clarity.                                              |
+| `RESEND_API_KEY`                 | Optional     | Enables real email delivery for forms. Blank = simulated send.                                     |
+| `EMAIL_FROM`                     | With Resend  | Verified sender, e.g. `Acme <hello@yourdomain.com>`.                                               |
+| `CONTACT_TO_EMAIL`               | Optional     | Where form notifications go (falls back to `EMAIL_FROM`).                                          |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional     | Renders the Cloudflare Turnstile CAPTCHA widget.                                                   |
+| `TURNSTILE_SECRET_KEY`           | With CAPTCHA | Server-side CAPTCHA verification. Blank disables verification.                                     |
 
 Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser; others stay server-side.
+Email and CAPTCHA are **off by default** — the app runs fully without them (forms validate and
+simulate delivery). Set the relevant variables to activate real delivery / CAPTCHA.
 
 ## Scripts
 

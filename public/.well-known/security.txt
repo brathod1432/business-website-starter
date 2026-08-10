@@ -1,0 +1,7 @@
+# RFC 9116 security.txt — how to report vulnerabilities.
+# Update Contact, Canonical, and Expires for your domain before launch.
+Contact: mailto:security@acmesolutions.example
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://acmesolutions.example/.well-known/security.txt
+Policy: https://acmesolutions.example/terms
