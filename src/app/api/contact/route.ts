@@ -83,5 +83,14 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, message: 'Message received.' }, { status: 200 });
+  return NextResponse.json(
+    { ok: true, message: 'Message received.' },
+    {
+      status: 200,
+      headers: {
+        'X-RateLimit-Limit': String(limit.limit),
+        'X-RateLimit-Remaining': String(limit.remaining),
+      },
+    },
+  );
 }

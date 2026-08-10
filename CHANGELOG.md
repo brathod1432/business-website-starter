@@ -3,6 +3,18 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.5.0] - 2026-08-10
+
+### Added
+
+- **Real-user Core Web Vitals** reporting (`WebVitals`) via `useReportWebVitals`, sent as
+  consent-gated analytics events (LCP, INP, CLS, FCP, TTFB).
+- **AI-crawler control**: `siteConfig.seo.blockAiCrawlers` disallows known AI training bots
+  (GPTBot, ClaudeBot, CCBot, Google-Extended, …) in `robots.txt`; testable `buildRobotsRules`.
+- **Modern security reporting**: `Reporting-Endpoints` header + CSP `report-to` directive.
+- **Rate-limit headers** (`X-RateLimit-Limit` / `X-RateLimit-Remaining`) on API responses.
+- Tests for robots rules (95 tests total).
+
 ## [1.4.0] - 2026-08-10
 
 ### Added

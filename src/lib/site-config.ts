@@ -44,6 +44,15 @@ export const siteConfig = {
   ] satisfies SocialLink[],
   twitterHandle: '@acmesolutions',
   /**
+   * Crawler policy. Set `blockAiCrawlers: true` to disallow known AI training
+   * crawlers (GPTBot, ClaudeBot, CCBot, Google-Extended, etc.) in robots.txt —
+   * a growing request from clients who don't want their content used for model
+   * training. Regular search engines are unaffected.
+   */
+  seo: {
+    blockAiCrawlers: false,
+  },
+  /**
    * Local business SEO (Schema.org LocalBusiness). Set `enabled: true` for
    * businesses with a physical location or defined service area — clinics,
    * legal/consulting firms, agencies, trades, etc. Emits LocalBusiness JSON-LD

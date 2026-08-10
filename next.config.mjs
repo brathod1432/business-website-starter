@@ -23,13 +23,17 @@ const csp = [
   "frame-src 'self' https://challenges.cloudflare.com",
   'upgrade-insecure-requests',
   // Collect violation reports (see src/app/api/csp-report/route.ts).
+  // `report-uri` (legacy) + `report-to` (modern) for broad browser coverage.
   'report-uri /api/csp-report',
+  'report-to csp-endpoint',
 ]
   .join('; ')
   .concat(';');
 
 const securityHeaders = [
   { key: 'Content-Security-Policy', value: csp },
+  // Modern Reporting API endpoint referenced by the CSP `report-to` directive.
+  { key: 'Reporting-Endpoints', value: 'csp-endpoint="/api/csp-report"' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

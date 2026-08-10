@@ -59,5 +59,14 @@ export async function POST(request: Request) {
     console.info('[newsletter] new subscriber (simulated)', parsed.data.email);
   }
 
-  return NextResponse.json({ ok: true, message: 'Subscribed.' }, { status: 200 });
+  return NextResponse.json(
+    { ok: true, message: 'Subscribed.' },
+    {
+      status: 200,
+      headers: {
+        'X-RateLimit-Limit': String(limit.limit),
+        'X-RateLimit-Remaining': String(limit.remaining),
+      },
+    },
+  );
 }

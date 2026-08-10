@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import { Providers } from '@/components/providers';
 import { RouteAnalytics } from '@/components/route-analytics';
+import { WebVitals } from '@/components/web-vitals';
 import { LocalBusinessJsonLd, OrganizationJsonLd, WebsiteJsonLd } from '@/components/seo/json-ld';
 import { buildMetadata } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CookieBanner />
           <RouteAnalytics />
+          <WebVitals />
           <OrganizationJsonLd />
           <LocalBusinessJsonLd />
           <WebsiteJsonLd />

@@ -271,13 +271,48 @@ measure and trust.
 
 ---
 
+## Round 5 — real-user performance, crawler control, deeper reporting
+
+Operator-focused additions: measure what real visitors experience, control who may crawl the
+content, and modernize security reporting.
+
+### Real-user performance monitoring (RUM)
+
+- **`WebVitals`** reports Core Web Vitals (LCP, INP, CLS, FCP, TTFB) as consent-gated analytics
+  events via Next's built-in `useReportWebVitals` (no dependency). **Why it matters:** Lighthouse
+  is a lab score; this shows what actual users on real devices/networks experience, so a client can
+  spot and fix regressions that only appear in the field.
+
+### Crawler / AI-bot control (a growing client request)
+
+- **`siteConfig.seo.blockAiCrawlers`** — flip to `true` to disallow known AI training crawlers
+  (GPTBot, ClaudeBot, CCBot, Google-Extended, PerplexityBot, Bytespider, …) in `robots.txt` while
+  leaving normal search engines untouched. **Why it matters:** many businesses now want a say in
+  whether their content trains third-party models — this makes it a one-line policy decision.
+
+### Deeper security reporting & observability
+
+- **Modern Reporting API**: a `Reporting-Endpoints` response header plus a CSP `report-to`
+  directive (alongside the existing `report-uri`) so both modern and legacy browsers deliver CSP
+  violation reports to `/api/csp-report`.
+- **Rate-limit headers**: API responses now expose `X-RateLimit-Limit` / `X-RateLimit-Remaining`,
+  giving clients (and monitoring) visibility into throttling.
+
+> As always, these are safe by default: RUM events are no-ops until analytics + consent are
+> present, AI-crawler blocking is opt-in, and the reporting endpoints simply log until wired to a
+> monitoring sink.
+
+---
+
 ## Summary
 
-Across four passes the starter went from "great demo" → "safe to ship" → "working product" →
-"a site a client can grow" → "**a site a client can measure and trust**": privacy-compliant,
-consent-managed analytics with SPA page-view tracking and accessible route changes; layered
-security (CSP/HSTS + reporting, CSRF/origin guard, isolation headers, rate limiting, CAPTCHA,
-honeypots, CI audit); real email delivery; dark mode; lead capture; a real blog taxonomy with
-related posts + RSS + rich social cards; LocalBusiness structured data **with star ratings**;
-health/security endpoints; resilience boundaries; PWA basics; one-click deploy; and a credible
-open-source/CI foundation — all verified by the lint/typecheck/test/build gates (**92 tests**).
+Across five passes the starter went from "great demo" → "safe to ship" → "working product" →
+"a site a client can grow" → "a site a client can measure and trust" → "**a site an operator can
+run, measure, and defend**": privacy-compliant, consent-managed analytics with SPA page-view
+tracking, accessible route changes, and real-user Core Web Vitals; layered security (CSP/HSTS +
+modern reporting, CSRF/origin guard, isolation headers, rate limiting + headers, CAPTCHA,
+honeypots, CI audit); configurable AI-crawler control; real email delivery; dark mode; lead
+capture; a real blog taxonomy with related posts + RSS + rich social cards; LocalBusiness
+structured data with star ratings; health/security endpoints; resilience boundaries; PWA basics;
+one-click deploy; and a credible open-source/CI foundation — all verified by the
+lint/typecheck/test/build gates (**95 tests**).
