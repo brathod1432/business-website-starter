@@ -22,6 +22,8 @@ const csp = [
   "connect-src 'self' https://www.google-analytics.com https://*.clarity.ms https://*.google-analytics.com https://challenges.cloudflare.com",
   "frame-src 'self' https://challenges.cloudflare.com",
   'upgrade-insecure-requests',
+  // Collect violation reports (see src/app/api/csp-report/route.ts).
+  'report-uri /api/csp-report',
 ]
   .join('; ')
   .concat(';');

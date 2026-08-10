@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
+import { CookieSettingsButton } from '@/components/consent/cookie-settings-button';
 import { Logo } from '@/components/layout/logo';
 import { Newsletter } from '@/components/sections/newsletter';
 import { footerNav, siteConfig } from '@/lib/site-config';
@@ -72,20 +73,23 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {year} {siteConfig.legalName}. All rights reserved.
           </p>
-          <ul className="flex gap-4">
-            {siteConfig.social.map((s) => (
-              <li key={s.href}>
-                <a
-                  href={s.href}
-                  className="text-sm text-muted-foreground hover:text-primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center gap-4">
+            <CookieSettingsButton />
+            <ul className="flex gap-4">
+              {siteConfig.social.map((s) => (
+                <li key={s.href}>
+                  <a
+                    href={s.href}
+                    className="text-sm text-muted-foreground hover:text-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

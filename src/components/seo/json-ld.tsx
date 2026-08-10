@@ -1,3 +1,4 @@
+import { getAggregateRating, testimonials } from '@/content/site-data';
 import { absoluteUrl } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
 
@@ -44,6 +45,8 @@ export function LocalBusinessJsonLd() {
   const business = siteConfig.business;
   if (!business?.enabled) return null;
 
+  const rating = getAggregateRating();
+
   return (
     <JsonLd
       data={{
@@ -81,6 +84,26 @@ export function LocalBusinessJsonLd() {
           opens: slot.opens,
           closes: slot.closes,
         })),
+        ...(rating
+          ? {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: rating.ratingValue,
+                reviewCount: rating.reviewCount,
+                bestRating: rating.best,
+              },
+              review: testimonials.slice(0, 3).map((t) => ({
+                '@type': 'Review',
+                reviewRating: {
+                  '@type': 'Rating',
+                  ratingValue: t.rating,
+                  bestRating: 5,
+                },
+                author: { '@type': 'Person', name: t.author },
+                reviewBody: t.quote,
+              })),
+            }
+          : {}),
         sameAs: siteConfig.social.map((s) => s.href),
       }}
     />

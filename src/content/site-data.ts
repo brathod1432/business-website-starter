@@ -229,3 +229,19 @@ export const metrics: Metric[] = [
 export function getFaqs(): Faq[] {
   return faqs;
 }
+
+/**
+ * Aggregate rating derived from testimonials, for LocalBusiness/Organization
+ * rich snippets (star ratings in search). Returns null if there are no ratings.
+ */
+export function getAggregateRating(): {
+  ratingValue: number;
+  reviewCount: number;
+  best: number;
+} | null {
+  const rated = testimonials.filter((t) => typeof t.rating === 'number' && t.rating > 0);
+  if (rated.length === 0) return null;
+  const sum = rated.reduce((acc, t) => acc + t.rating, 0);
+  const ratingValue = Math.round((sum / rated.length) * 10) / 10;
+  return { ratingValue, reviewCount: rated.length, best: 5 };
+}

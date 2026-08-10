@@ -9,6 +9,8 @@ const STORAGE_KEY = 'cookie-consent';
 type ConsentContextValue = {
   consent: ConsentState;
   setConsent: (value: Exclude<ConsentState, 'unset'>) => void;
+  /** Clears the stored choice and reopens the banner (GDPR withdrawal). */
+  reset: () => void;
   /** True once the persisted value has been read on the client (avoids flashes). */
   ready: boolean;
 };
@@ -38,7 +40,19 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const value = React.useMemo(() => ({ consent, setConsent, ready }), [consent, setConsent, ready]);
+  const reset = React.useCallback(() => {
+    setConsentState('unset');
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const value = React.useMemo(
+    () => ({ consent, setConsent, reset, ready }),
+    [consent, setConsent, reset, ready],
+  );
 
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>;
 }

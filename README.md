@@ -42,12 +42,12 @@ and more.
 | Content    | Repository pattern (`getServices`, `getBlogPostBySlug`, …) ready for a headless CMS                                       |
 | Blog       | Tag pages (`/blog/tag/[slug]`), topics cloud, clickable tags, related posts                                               |
 | SEO        | `buildMetadata()` helper, JSON-LD (Org, **LocalBusiness**, Article, Service, Breadcrumb, FAQ), sitemap/robots, dynamic OG |
-| Privacy    | Cookie consent banner; analytics load only after opt-in                                                                   |
-| Security   | CSP + HSTS, COOP/CORP, CSRF origin guard, rate limiting, env validation, honeypots, CI audit                              |
+| Privacy    | Cookie consent banner + "Cookie settings" to withdraw; analytics load only after opt-in                                   |
+| Security   | CSP + HSTS + violation reporting, COOP/CORP, CSRF origin guard, rate limiting, env validation, honeypots, CI audit        |
 | PWA        | Web app manifest + icons (192/512 + maskable)                                                                             |
 | Resilience | `error`, `global-error`, and `loading` route boundaries                                                                   |
 | Motion     | Framer Motion reveals that respect `prefers-reduced-motion`                                                               |
-| Analytics  | GA4 + Microsoft Clarity, consent-gated, `afterInteractive`                                                                |
+| Analytics  | GA4 + Microsoft Clarity, consent-gated; SPA `page_view` + conversion events                                               |
 | Quality    | TypeScript strict, ESLint, Prettier, Jest + RTL + jest-axe, GitHub Actions CI                                             |
 
 ## Tech Stack

@@ -230,12 +230,54 @@ in search). It's now one config block away.
 
 ---
 
+## Round 4 — measurement, accessibility of navigation, richer snippets, security observability
+
+Small, high-leverage items that separate a site that merely works from one a client can actually
+measure and trust.
+
+### Conversion measurement that actually fires
+
+- **`RouteAnalytics`** sends a consent-gated `page_view` on every client-side navigation. Next's
+  App Router doesn't re-fire GA's automatic pageview after the first load, so without this a client
+  would only ever see the landing page in analytics — a silent, very common data-loss bug.
+
+### Accessibility for single-page navigation
+
+- On route change, `RouteAnalytics` moves focus to the `#main-content` landmark and announces the
+  new page via an `aria-live` region. SPA navigation is invisible to screen readers by default;
+  this is a real WCAG improvement most starters miss.
+
+### Richer search snippets (higher CTR)
+
+- **AggregateRating + Review** structured data is now embedded in the LocalBusiness JSON-LD,
+  derived from testimonials (`getAggregateRating`). This is what surfaces **star ratings in Google
+  results** — a direct, measurable click-through lift for service businesses.
+
+### GDPR consent management (not just a banner)
+
+- A **"Cookie settings"** control in the footer lets visitors reopen the banner to change or
+  **withdraw** consent (`reset()` in the consent context). The ability to withdraw is a legal
+  requirement that a one-time banner alone does not satisfy.
+
+### Security observability
+
+- **CSP violation reporting**: a `report-uri` directive plus an `/api/csp-report` collector so
+  blocked-resource reports (often the first signal of an injection attempt or a misconfigured
+  third party) are captured — ready to forward to Sentry/Datadog in production.
+
+> Everything here is off-by-default-friendly: analytics events and the cookie control only do
+> anything once analytics is configured and consent is granted; CSP reports simply log until you
+> wire a monitoring sink.
+
+---
+
 ## Summary
 
-Across three passes the starter went from "great demo" → "safe to ship" → "working product" →
-"**a site a client can actually grow**": privacy-compliant analytics, layered security (CSP/HSTS,
-CSRF/origin guard, isolation headers, rate limiting, CAPTCHA, honeypots, CI audit), real email
-delivery, dark mode, lead capture, a real blog taxonomy with related posts + RSS + rich social
-cards, LocalBusiness structured data, health/security endpoints, resilience boundaries, PWA basics,
-one-click deploy, and a credible open-source/CI foundation — all verified by the
-lint/typecheck/test/build gates (**89 tests**).
+Across four passes the starter went from "great demo" → "safe to ship" → "working product" →
+"a site a client can grow" → "**a site a client can measure and trust**": privacy-compliant,
+consent-managed analytics with SPA page-view tracking and accessible route changes; layered
+security (CSP/HSTS + reporting, CSRF/origin guard, isolation headers, rate limiting, CAPTCHA,
+honeypots, CI audit); real email delivery; dark mode; lead capture; a real blog taxonomy with
+related posts + RSS + rich social cards; LocalBusiness structured data **with star ratings**;
+health/security endpoints; resilience boundaries; PWA basics; one-click deploy; and a credible
+open-source/CI foundation — all verified by the lint/typecheck/test/build gates (**92 tests**).

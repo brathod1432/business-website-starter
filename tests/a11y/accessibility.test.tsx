@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 
+import { ConsentProvider } from '@/components/consent/consent-context';
 import { ContactForm } from '@/components/sections/contact-form';
 import { Footer } from '@/components/layout/footer';
 import { PricingCard } from '@/components/sections/pricing-card';
@@ -13,7 +14,11 @@ describe('accessibility (jest-axe)', () => {
   });
 
   it('Footer has no detectable a11y violations', async () => {
-    const { container } = render(<Footer />);
+    const { container } = render(
+      <ConsentProvider>
+        <Footer />
+      </ConsentProvider>,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 

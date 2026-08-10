@@ -3,6 +3,19 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.4.0] - 2026-08-10
+
+### Added
+
+- **SPA analytics + accessibility**: `RouteAnalytics` fires a consent-gated `page_view` on
+  client-side navigation and moves focus to `#main-content` with an `aria-live` announcement.
+- **Star rich snippets**: `AggregateRating` + `Review` structured data in the LocalBusiness
+  JSON-LD, derived from testimonials (`getAggregateRating`).
+- **GDPR consent withdrawal**: `reset()` in the consent context and a "Cookie settings" footer
+  control to reopen/change consent.
+- **CSP violation reporting**: `report-uri` directive + `/api/csp-report` collector endpoint.
+- Tests for aggregate rating and consent reset (92 tests total).
+
 ## [1.3.0] - 2026-08-10
 
 ### Added
