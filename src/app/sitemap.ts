@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { getBlogPosts } from '@/content/blog';
+import { getBlogPosts, getTagSlugs } from '@/content/blog';
 import { getCaseStudies } from '@/content/case-studies';
 import { getServices } from '@/content/services';
 import { absoluteUrl } from '@/lib/seo';
@@ -51,5 +51,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...caseStudyRoutes, ...blogRoutes];
+  const tagRoutes: MetadataRoute.Sitemap = getTagSlugs().map((tag) => ({
+    url: absoluteUrl(`/blog/tag/${tag}`),
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.4,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...caseStudyRoutes, ...blogRoutes, ...tagRoutes];
 }

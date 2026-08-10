@@ -29,25 +29,26 @@ and more.
 
 ## Features
 
-| Area       | Highlights                                                                                                 |
-| ---------- | ---------------------------------------------------------------------------------------------------------- |
-| UI         | ShadCN-style primitives (Button, Card, Input, Textarea, Label, Accordion, Badge)                           |
-| Sections   | Hero, Client Logos, Services, Why Choose Us, Process, Metrics, Testimonials, Industries, FAQ, CTA, Contact |
-| Dark mode  | System-aware theme with a header toggle (`next-themes`)                                                    |
-| Forms      | React Hook Form + Zod, shared client/server schema, honeypot + rate limiting, success/error states         |
-| Lead gen   | Contact form + newsletter signup with **real email delivery** (Resend) + simulated fallback                |
-| Email      | Provider-agnostic `sendEmail` (no SDK dep); set `RESEND_API_KEY` + `EMAIL_FROM` to go live                 |
-| Anti-spam  | Honeypots + IP rate limiting + optional Cloudflare Turnstile CAPTCHA (env-gated)                           |
-| Feeds/Ops  | RSS at `/feed.xml`, `/api/health`, `/.well-known/security.txt`                                             |
-| Content    | Repository pattern (`getServices`, `getBlogPostBySlug`, …) ready for a headless CMS                        |
-| SEO        | `buildMetadata()` helper, JSON-LD components, sitemap/robots, dynamic OG image route                       |
-| Privacy    | Cookie consent banner; analytics load only after opt-in                                                    |
-| Security   | CSP + HSTS & hardened headers, IP rate limiting, env validation, honeypots                                 |
-| PWA        | Web app manifest + icons (192/512 + maskable)                                                              |
-| Resilience | `error`, `global-error`, and `loading` route boundaries                                                    |
-| Motion     | Framer Motion reveals that respect `prefers-reduced-motion`                                                |
-| Analytics  | GA4 + Microsoft Clarity, consent-gated, `afterInteractive`                                                 |
-| Quality    | TypeScript strict, ESLint, Prettier, Jest + RTL + jest-axe, GitHub Actions CI                              |
+| Area       | Highlights                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
+| UI         | ShadCN-style primitives (Button, Card, Input, Textarea, Label, Accordion, Badge)                                          |
+| Sections   | Hero, Client Logos, Services, Why Choose Us, Process, Metrics, Testimonials, Industries, FAQ, CTA, Contact                |
+| Dark mode  | System-aware theme with a header toggle (`next-themes`)                                                                   |
+| Forms      | React Hook Form + Zod, shared client/server schema, honeypot + rate limiting, success/error states                        |
+| Lead gen   | Contact form + newsletter signup with **real email delivery** (Resend) + simulated fallback                               |
+| Email      | Provider-agnostic `sendEmail` (no SDK dep); set `RESEND_API_KEY` + `EMAIL_FROM` to go live                                |
+| Anti-spam  | Honeypots + IP rate limiting + optional Cloudflare Turnstile CAPTCHA (env-gated)                                          |
+| Feeds/Ops  | RSS at `/feed.xml`, `/api/health`, `/.well-known/security.txt`                                                            |
+| Content    | Repository pattern (`getServices`, `getBlogPostBySlug`, …) ready for a headless CMS                                       |
+| Blog       | Tag pages (`/blog/tag/[slug]`), topics cloud, clickable tags, related posts                                               |
+| SEO        | `buildMetadata()` helper, JSON-LD (Org, **LocalBusiness**, Article, Service, Breadcrumb, FAQ), sitemap/robots, dynamic OG |
+| Privacy    | Cookie consent banner; analytics load only after opt-in                                                                   |
+| Security   | CSP + HSTS, COOP/CORP, CSRF origin guard, rate limiting, env validation, honeypots, CI audit                              |
+| PWA        | Web app manifest + icons (192/512 + maskable)                                                                             |
+| Resilience | `error`, `global-error`, and `loading` route boundaries                                                                   |
+| Motion     | Framer Motion reveals that respect `prefers-reduced-motion`                                                               |
+| Analytics  | GA4 + Microsoft Clarity, consent-gated, `afterInteractive`                                                                |
+| Quality    | TypeScript strict, ESLint, Prettier, Jest + RTL + jest-axe, GitHub Actions CI                                             |
 
 ## Tech Stack
 

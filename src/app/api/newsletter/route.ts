@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { escapeHtml, sendEmail } from '@/lib/email';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import { isSameOrigin } from '@/lib/request-guard';
 import { newsletterSchema } from '@/lib/validations/newsletter';
 
 /**
@@ -12,6 +13,10 @@ import { newsletterSchema } from '@/lib/validations/newsletter';
  * provider (Mailchimp, ConvertKit, Resend Audiences, Beehiiv, etc.).
  */
 export async function POST(request: Request) {
+  if (!isSameOrigin(request)) {
+    return NextResponse.json({ error: 'Cross-origin request rejected.' }, { status: 403 });
+  }
+
   const ip = getClientIp(request);
   const limit = rateLimit(`newsletter:${ip}`, { limit: 5, windowMs: 60_000 });
   if (!limit.success) {

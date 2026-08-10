@@ -140,3 +140,51 @@ export function getBlogPostBySlug(slug: string): BlogPost | undefined {
 export function getBlogSlugs(): string[] {
   return posts.map((post) => post.slug);
 }
+
+/** Normalize a tag into a URL-safe slug. */
+export function tagToSlug(tag: string): string {
+  return tag.toLowerCase().trim().replace(/\s+/g, '-');
+}
+
+/** Unique tags with post counts, most frequent first. */
+export function getAllTags(): { tag: string; slug: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const post of posts) {
+    for (const tag of post.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([tag, count]) => ({ tag, slug: tagToSlug(tag), count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+export function getTagSlugs(): string[] {
+  return getAllTags().map((t) => t.slug);
+}
+
+/** Resolve a tag slug back to its display label, if it exists. */
+export function getTagBySlug(slug: string): string | undefined {
+  return getAllTags().find((t) => t.slug === slug)?.tag;
+}
+
+/** Posts that carry the given tag slug (newest first). */
+export function getPostsByTag(slug: string): BlogPost[] {
+  return getBlogPosts().filter((post) => post.tags.some((tag) => tagToSlug(tag) === slug));
+}
+
+/** Related posts by shared tags/category, excluding the current post. */
+export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
+  const current = getBlogPostBySlug(slug);
+  if (!current) return [];
+  const currentTags = new Set(current.tags.map(tagToSlug));
+  return getBlogPosts()
+    .filter((post) => post.slug !== slug)
+    .map((post) => {
+      const shared = post.tags.filter((tag) => currentTags.has(tagToSlug(tag))).length;
+      const score = shared + (post.category === current.category ? 1 : 0);
+      return { post, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((entry) => entry.post);
+}

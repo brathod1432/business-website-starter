@@ -188,10 +188,54 @@ Still open, by priority:
 
 ---
 
+## Round 3 — content marketing, deeper security, local SEO
+
+With delivery and safety handled, this pass targets what actually helps a client **get found and
+convert**, plus another layer of security depth.
+
+### Content marketing depth (blog that scales)
+
+- **Tag taxonomy** — a real repository API (`getAllTags`, `getPostsByTag`, `getTagBySlug`,
+  `tagToSlug`) powering statically generated **tag pages** at `/blog/tag/[slug]`, a "Topics" cloud
+  on the blog index, and clickable tags on every post.
+- **Related posts** — each article surfaces up to three related pieces (scored by shared
+  tags/category), increasing time-on-site and internal linking (good for SEO and engagement).
+- Tag pages are added to the **sitemap** automatically.
+
+**Why it matters:** content is how service businesses earn organic traffic. Tags, topic hubs, and
+related-post linking turn a flat blog into an interlinked content engine — the difference between a
+blog that ranks and one that doesn't.
+
+### Deeper security (defense in depth)
+
+| Area                  | Implementation                                                                                    | Benefit                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **CSRF**              | `isSameOrigin()` guard on `/api/contact` and `/api/newsletter` — cross-origin POSTs get `403`     | Blocks forged submissions from other sites                       |
+| **Isolation headers** | `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy`, `X-Permitted-Cross-Domain-Policies` | Stronger process isolation; blocks Flash/PDF cross-domain access |
+| **Supply chain**      | `npm audit --audit-level=high` step in CI (advisory)                                              | Surfaces vulnerable dependencies on every push                   |
+
+The origin guard intentionally allows requests with **no** `Origin` header (server-to-server, uptime
+checks, curl) since those aren't browser CSRF vectors — verified at runtime (cross-origin POST →
+`403`, same-origin → `200`).
+
+### Local-business SEO (the target market)
+
+- **`LocalBusinessJsonLd`** — configurable via `siteConfig.business` (Schema.org type such as
+  `ProfessionalService`/`LegalService`/`MedicalClinic`, `priceRange`, `areaServed`, geo
+  coordinates, and opening hours). Rendered site-wide when enabled.
+
+**Why it matters:** this starter targets local businesses, clinics, and firms — exactly the sites
+that benefit from LocalBusiness structured data (Google Business panels, "near me" results, hours
+in search). It's now one config block away.
+
+---
+
 ## Summary
 
-Across both passes the starter went from "great demo" to "safe to ship" to "**working product a
-client can run**": privacy-compliant analytics, hardened security (CSP/HSTS, rate limiting,
-CAPTCHA, honeypots), real email delivery, dark mode, lead capture, RSS + rich social cards,
-health/security endpoints, resilience boundaries, PWA basics, one-click deploy, and a credible
-open-source/CI foundation — all verified by the lint/typecheck/test/build gates (78 tests).
+Across three passes the starter went from "great demo" → "safe to ship" → "working product" →
+"**a site a client can actually grow**": privacy-compliant analytics, layered security (CSP/HSTS,
+CSRF/origin guard, isolation headers, rate limiting, CAPTCHA, honeypots, CI audit), real email
+delivery, dark mode, lead capture, a real blog taxonomy with related posts + RSS + rich social
+cards, LocalBusiness structured data, health/security endpoints, resilience boundaries, PWA basics,
+one-click deploy, and a credible open-source/CI foundation — all verified by the
+lint/typecheck/test/build gates (**89 tests**).

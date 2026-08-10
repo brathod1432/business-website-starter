@@ -40,6 +40,53 @@ export function OrganizationJsonLd() {
   );
 }
 
+export function LocalBusinessJsonLd() {
+  const business = siteConfig.business;
+  if (!business?.enabled) return null;
+
+  return (
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        '@type': business.type,
+        '@id': `${siteConfig.url}/#localbusiness`,
+        name: siteConfig.legalName,
+        url: siteConfig.url,
+        image: absoluteUrl(siteConfig.ogImage),
+        logo: absoluteUrl('/logo.svg'),
+        email: siteConfig.contact.email,
+        telephone: siteConfig.contact.phone,
+        priceRange: business.priceRange,
+        areaServed: business.areaServed,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: siteConfig.contact.address.street,
+          addressLocality: siteConfig.contact.address.city,
+          addressRegion: siteConfig.contact.address.region,
+          postalCode: siteConfig.contact.address.postalCode,
+          addressCountry: siteConfig.contact.address.country,
+        },
+        ...(business.geo
+          ? {
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: business.geo.latitude,
+                longitude: business.geo.longitude,
+              },
+            }
+          : {}),
+        openingHoursSpecification: business.openingHours.map((slot) => ({
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: slot.days,
+          opens: slot.opens,
+          closes: slot.closes,
+        })),
+        sameAs: siteConfig.social.map((s) => s.href),
+      }}
+    />
+  );
+}
+
 export function WebsiteJsonLd() {
   return (
     <JsonLd

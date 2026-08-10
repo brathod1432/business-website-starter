@@ -4,12 +4,13 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
+import { BlogPostCard } from '@/components/sections/blog-post-card';
 import { CTA } from '@/components/sections/cta';
 import { PageHeader } from '@/components/sections/page-header';
 import { Prose } from '@/components/sections/prose';
-import { Section } from '@/components/sections/section';
+import { Section, SectionHeader } from '@/components/sections/section';
 import { ArticleJsonLd } from '@/components/seo/json-ld';
-import { getBlogPostBySlug, getBlogSlugs } from '@/content/blog';
+import { getBlogPostBySlug, getBlogSlugs, getRelatedPosts, tagToSlug } from '@/content/blog';
 import { buildMetadata } from '@/lib/seo';
 import { formatDate, readingTime } from '@/lib/utils';
 
@@ -38,6 +39,8 @@ export default async function BlogPostPage({ params }: Params) {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
+
+  const related = getRelatedPosts(post.slug);
 
   return (
     <>
@@ -68,9 +71,9 @@ export default async function BlogPostPage({ params }: Params) {
 
           <div className="mt-10 flex flex-wrap gap-2 border-t pt-6">
             {post.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                #{tag}
-              </Badge>
+              <Link key={tag} href={`/blog/tag/${tagToSlug(tag)}`}>
+                <Badge variant="secondary">#{tag}</Badge>
+              </Link>
             ))}
           </div>
 
@@ -85,6 +88,21 @@ export default async function BlogPostPage({ params }: Params) {
           </div>
         </article>
       </Section>
+
+      {related.length > 0 ? (
+        <Section spacing="lg" muted aria-labelledby="related-heading">
+          <SectionHeader
+            eyebrow="Keep reading"
+            title="Related articles"
+            description="More on the topics covered in this post."
+          />
+          <div className="grid gap-6 md:grid-cols-3">
+            {related.map((r) => (
+              <BlogPostCard key={r.slug} post={r} />
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
       <CTA />
       <ArticleJsonLd

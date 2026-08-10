@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { BlogPostCard } from '@/components/sections/blog-post-card';
 import { PageHeader } from '@/components/sections/page-header';
 import { Section } from '@/components/sections/section';
-import { getBlogPosts } from '@/content/blog';
+import { getAllTags, getBlogPosts } from '@/content/blog';
 import { buildMetadata } from '@/lib/seo';
 import { formatDate } from '@/lib/utils';
 
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   const posts = getBlogPosts();
   const [featured, ...rest] = posts;
+  const tags = getAllTags();
 
   return (
     <>
@@ -61,26 +63,22 @@ export default function BlogPage() {
           </Card>
         ) : null}
 
+        {tags.length > 0 ? (
+          <div className="mb-10 flex flex-wrap items-center gap-2" aria-label="Browse by topic">
+            <span className="mr-1 text-sm font-medium text-muted-foreground">Topics:</span>
+            {tags.map((t) => (
+              <Link key={t.slug} href={`/blog/tag/${t.slug}`}>
+                <Badge variant="secondary">
+                  #{t.tag} ({t.count})
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        ) : null}
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {rest.map((post) => (
-            <Card key={post.slug} className="group relative flex flex-col hover:shadow-elevated">
-              <CardHeader>
-                <Badge variant="secondary" className="mb-2 w-fit">
-                  {post.category}
-                </Badge>
-                <CardTitle>
-                  <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">
-                    {post.title}
-                  </Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col">
-                <p className="text-sm text-muted-foreground">{post.excerpt}</p>
-                <p className="mt-4 text-xs text-muted-foreground">
-                  {post.author} · {formatDate(post.publishedAt)}
-                </p>
-              </CardContent>
-            </Card>
+            <BlogPostCard key={post.slug} post={post} />
           ))}
         </div>
       </Section>

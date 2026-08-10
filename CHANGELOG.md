@@ -3,6 +3,21 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.0] - 2026-08-10
+
+### Added
+
+- **Blog tag taxonomy**: statically generated tag pages at `/blog/tag/[slug]`, a topics cloud on
+  the blog index, clickable tags, and **related posts** on each article (`getAllTags`,
+  `getPostsByTag`, `getRelatedPosts`, `tagToSlug`). Tag pages included in the sitemap.
+- **LocalBusiness structured data** (`LocalBusinessJsonLd`) configurable via `siteConfig.business`
+  (Schema.org type, price range, area served, geo, opening hours).
+- **CSRF/origin guard** (`isSameOrigin`) on the contact and newsletter API routes.
+- Extra hardening headers: `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy`,
+  `X-Permitted-Cross-Domain-Policies`.
+- CI **dependency audit** step (`npm audit`, advisory).
+- Reusable `BlogPostCard` component; tests for tags and the origin guard (89 tests total).
+
 ## [1.2.0] - 2026-08-10
 
 ### Added

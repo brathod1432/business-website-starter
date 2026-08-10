@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { escapeHtml, sendEmail } from '@/lib/email';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import { isSameOrigin } from '@/lib/request-guard';
 import { verifyTurnstile } from '@/lib/turnstile';
 import { contactFormSchema } from '@/lib/validations/contact';
 
@@ -14,6 +15,10 @@ import { contactFormSchema } from '@/lib/validations/contact';
  * `RESEND_API_KEY`, `EMAIL_FROM`, and `CONTACT_TO_EMAIL` to go live.
  */
 export async function POST(request: Request) {
+  if (!isSameOrigin(request)) {
+    return NextResponse.json({ error: 'Cross-origin request rejected.' }, { status: 403 });
+  }
+
   const ip = getClientIp(request);
   const limit = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 });
   if (!limit.success) {

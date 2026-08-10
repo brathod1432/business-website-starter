@@ -43,6 +43,31 @@ export const siteConfig = {
     { label: 'GitHub', href: 'https://github.com/example' },
   ] satisfies SocialLink[],
   twitterHandle: '@acmesolutions',
+  /**
+   * Local business SEO (Schema.org LocalBusiness). Set `enabled: true` for
+   * businesses with a physical location or defined service area — clinics,
+   * legal/consulting firms, agencies, trades, etc. Emits LocalBusiness JSON-LD
+   * with hours, price range, and (optionally) geo coordinates.
+   */
+  business: {
+    enabled: true,
+    /** A Schema.org type, e.g. ProfessionalService, LegalService, MedicalClinic. */
+    type: 'ProfessionalService',
+    priceRange: '$$',
+    areaServed: 'Worldwide',
+    /** Optional geo coordinates (leave undefined if not applicable). */
+    geo: { latitude: 37.7897, longitude: -122.3997 } as
+      | { latitude: number; longitude: number }
+      | undefined,
+    /** Schema.org opening-hours specifications. */
+    openingHours: [
+      {
+        days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
+  },
 } as const;
 
 export const mainNav: NavItem[] = [

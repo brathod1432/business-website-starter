@@ -6,7 +6,7 @@ import { CookieBanner } from '@/components/consent/cookie-banner';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import { Providers } from '@/components/providers';
-import { OrganizationJsonLd, WebsiteJsonLd } from '@/components/seo/json-ld';
+import { LocalBusinessJsonLd, OrganizationJsonLd, WebsiteJsonLd } from '@/components/seo/json-ld';
 import { buildMetadata } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
 
@@ -57,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CookieBanner />
           <OrganizationJsonLd />
+          <LocalBusinessJsonLd />
           <WebsiteJsonLd />
           <Analytics />
         </Providers>

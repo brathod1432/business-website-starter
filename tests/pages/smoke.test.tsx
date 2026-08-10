@@ -9,8 +9,9 @@ import PrivacyPage from '@/app/privacy-policy/page';
 import TermsPage from '@/app/terms/page';
 import NotFound from '@/app/not-found';
 import BlogPostPage from '@/app/blog/[slug]/page';
+import BlogTagPage from '@/app/blog/tag/[tag]/page';
 import CaseStudyPage from '@/app/case-studies/[slug]/page';
-import { getBlogPosts } from '@/content/blog';
+import { getAllTags, getBlogPosts } from '@/content/blog';
 import { getCaseStudies } from '@/content/case-studies';
 
 function expectSingleH1() {
@@ -69,5 +70,14 @@ describe('page rendering smoke tests', () => {
     const study = getCaseStudies()[0]!;
     render(await CaseStudyPage({ params: Promise.resolve({ slug: study.slug }) }));
     expect(screen.getByRole('heading', { level: 1, name: study.title })).toBeInTheDocument();
+  });
+
+  it('renders a blog tag page listing its posts', async () => {
+    const tag = getAllTags()[0]!;
+    render(await BlogTagPage({ params: Promise.resolve({ tag: tag.slug }) }));
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(
+      screen.getByRole('heading', { level: 1, name: `Tagged: ${tag.tag}` }),
+    ).toBeInTheDocument();
   });
 });
