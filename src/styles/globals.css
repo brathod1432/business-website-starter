@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens (Phase 11).
+ * All colors are HSL channels so Tailwind can apply opacity modifiers.
+ * Re-theme the entire site by editing the values below.
+ */
+@layer base {
+  :root {
+    /* Font stacks (system by default — swap via next/font, see docs/design-system.md) */
+    --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+      'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+    --font-display: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Brand: deep, trustworthy blue */
+    --primary: 221 83% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Supporting slate */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 42%;
+
+    /* Accent: energetic teal for highlights */
+    --accent: 173 80% 36%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 45%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 173 70% 45%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+
+  /* Accessible focus states for keyboard users */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .container-tight {
+    @apply container max-w-4xl;
+  }
+
+  .prose-content {
+    @apply leading-relaxed text-muted-foreground;
+  }
+
+  .prose-content p {
+    @apply mb-4;
+  }
+
+  .prose-content h2 {
+    @apply mb-4 mt-10 text-2xl font-semibold text-foreground;
+  }
+
+  .prose-content h3 {
+    @apply mb-3 mt-8 text-xl font-semibold text-foreground;
+  }
+
+  .prose-content ul {
+    @apply mb-4 list-disc space-y-2 pl-6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
