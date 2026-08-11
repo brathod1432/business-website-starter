@@ -3,6 +3,19 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.8.0] - 2026-08-11
+
+### Added
+
+- **Accessibility Statement page** (`/accessibility`) — linked in the footer, in the sitemap,
+  and covered by the axe-core E2E scan (now 14 pages).
+- **`.npmrc`** (`save-exact`, `engine-strict`) and an `engines` field for reproducible,
+  supply-chain-safer installs and an enforced Node/npm baseline.
+
+### Changed
+
+- Contact form moves focus to the success confirmation for screen-reader/keyboard users.
+
 ## [1.7.0] - 2026-08-11
 
 ### Added

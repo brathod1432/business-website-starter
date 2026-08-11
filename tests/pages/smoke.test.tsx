@@ -7,6 +7,7 @@ import CaseStudiesPage from '@/app/case-studies/page';
 import ContactPage from '@/app/contact/page';
 import PrivacyPage from '@/app/privacy-policy/page';
 import TermsPage from '@/app/terms/page';
+import AccessibilityPage from '@/app/accessibility/page';
 import NotFound from '@/app/not-found';
 import BlogPostPage from '@/app/blog/[slug]/page';
 import BlogTagPage from '@/app/blog/tag/[tag]/page';
@@ -51,7 +52,10 @@ describe('page rendering smoke tests', () => {
     const { unmount } = render(<PrivacyPage />);
     expectSingleH1();
     unmount();
-    render(<TermsPage />);
+    const terms = render(<TermsPage />);
+    expectSingleH1();
+    terms.unmount();
+    render(<AccessibilityPage />);
     expectSingleH1();
   });
 

@@ -304,9 +304,44 @@ content, and modernize security reporting.
 
 ---
 
+## Round 6 — legal/accessibility completeness and safer installs
+
+This pass is deliberately small. After the earlier rounds the meaningful incremental surface is
+largely exhausted; the honest, high-value remaining work is either legal/operational polish or
+the two large architectural items (i18n and an MDX/CMS authoring pipeline) that deserve their own
+dedicated effort rather than another broad sweep.
+
+What was added, and why it matters in practice:
+
+- **Accessibility Statement page (`/accessibility`).** Many businesses — especially those in the
+  EU (European Accessibility Act) or subject to ADA expectations in the US — are expected to
+  publish one. It is linked from the footer, included in the sitemap, and (fittingly) passes the
+  same axe-core scan as every other page. For an agency handing this to a client, it removes a
+  real launch checklist item.
+- **Accessible success feedback on the contact form.** After a successful send, focus now moves to
+  the confirmation, so screen-reader and keyboard users are told the submission worked rather than
+  being left on a stale button.
+- **Reproducible, supply-chain-safer installs.** An `.npmrc` pins exact versions on install
+  (`save-exact`) and enforces the supported runtime (`engine-strict`), paired with an `engines`
+  field in `package.json`. This reduces the chance of an unexpected transitive upgrade slipping in
+  and gives contributors a clear, enforced Node/npm baseline.
+
+Security posture, honestly stated: the app already layers CSP + HSTS + reporting, CSRF/origin
+checks, rate limiting, honeypots, optional CAPTCHA, consent-gated third-party scripts, and a CI
+dependency audit. The two remaining hardening steps are deliberate architectural trade-offs rather
+than quick wins — a **nonce-based strict CSP** (removes `'unsafe-inline'` but forces dynamic
+rendering, costing static generation) and a **distributed rate limiter** (needs an external store
+such as Redis). Both are documented in `SECURITY.md` and this report so an operator can choose them
+consciously.
+
+Coverage after this pass: **Jest 95** and **Playwright 99** (including axe-core scans on 14 pages),
+build across 44 routes.
+
+---
+
 ## Summary
 
-Across five passes the starter went from "great demo" → "safe to ship" → "working product" →
+Across six passes the starter went from "great demo" → "safe to ship" → "working product" →
 "a site a client can grow" → "a site a client can measure and trust" → "**a site an operator can
 run, measure, and defend**": privacy-compliant, consent-managed analytics with SPA page-view
 tracking, accessible route changes, and real-user Core Web Vitals; layered security (CSP/HSTS +

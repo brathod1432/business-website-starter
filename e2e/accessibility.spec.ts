@@ -19,6 +19,7 @@ const PAGES = [
   { name: 'about', path: '/about' },
   { name: 'privacy', path: '/privacy-policy' },
   { name: 'terms', path: '/terms' },
+  { name: 'accessibility statement', path: '/accessibility' },
 ];
 
 async function scan(page: import('@playwright/test').Page) {

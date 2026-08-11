@@ -55,7 +55,9 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 p-8 text-center"
+        ref={(el) => el?.focus()}
+        tabIndex={-1}
+        className="flex flex-col items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 p-8 text-center focus:outline-none"
       >
         <CheckCircle2 className="h-10 w-10 text-accent" aria-hidden="true" />
         <h3 className="text-xl font-semibold">Thanks — we got your message!</h3>

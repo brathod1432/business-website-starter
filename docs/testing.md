@@ -58,7 +58,7 @@ The Playwright suite (`e2e/`) exercises the app the way a real visitor and an op
 | `keyboard.spec.ts`           | Keyboard-operable nav (focus + Enter), FAQ toggle, mobile menu                                                                                            |
 | `runtime-health.spec.ts`     | No console errors / no failed same-origin requests on every key page                                                                                      |
 | `consent-and-motion.spec.ts` | Consent banner hidden by default, reduced-motion renders content, system light/dark scheme                                                                |
-| `accessibility.spec.ts`      | **axe-core** WCAG 2.0/2.1 A+AA scans on 13 pages, dark mode, and the contact form with errors                                                             |
+| `accessibility.spec.ts`      | **axe-core** WCAG 2.0/2.1 A+AA scans on 14 pages, dark mode, and the contact form with errors                                                             |
 | `security-and-api.spec.ts`   | Hardened headers, CSRF 403, rate-limit headers + 429, invalid-payload 422, health, CSP report 204                                                         |
 
 Accessibility scans use **@axe-core/playwright** and fail on any serious/critical violation.
@@ -69,7 +69,7 @@ deterministic.
 ## Current status
 
 - **Jest:** 21 suites · 95 tests passing
-- **Playwright (e2e):** 97 tests passing (Chrome), including axe-core a11y scans
+- **Playwright (e2e):** 99 tests passing (Chrome), including axe-core a11y scans
 - **Coverage:** ~78% statements · ~82% lines (Jest)
 
 Coverage intentionally excludes the root `layout.tsx` and pure-presentational config. The

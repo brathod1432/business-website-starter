@@ -13,6 +13,7 @@ const PAGES = [
   { path: '/contact', title: /Contact \|/, canonical: '/contact' },
   { path: '/privacy-policy', title: /Privacy Policy \|/, canonical: '/privacy-policy' },
   { path: '/terms', title: /Terms of Service \|/, canonical: '/terms' },
+  { path: '/accessibility', title: /Accessibility Statement \|/, canonical: '/accessibility' },
 ];
 
 for (const p of PAGES) {
