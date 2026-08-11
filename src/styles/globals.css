@@ -31,8 +31,8 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 42%;
 
-    /* Accent: energetic teal for highlights */
-    --accent: 173 80% 36%;
+    /* Accent: deep teal — dark enough for white text to meet WCAG AA (4.5:1) */
+    --accent: 174 84% 26%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
@@ -52,7 +52,9 @@
     --card: 222 47% 10%;
     --card-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
+    /* Light blue + dark foreground: passes AA both as a button bg (dark text on
+       it) and as text color (`text-primary`) on the dark background. */
+    --primary: 213 94% 72%;
     --primary-foreground: 222 47% 11%;
 
     --secondary: 217 33% 17%;
@@ -69,7 +71,7 @@
 
     --border: 217 33% 20%;
     --input: 217 33% 20%;
-    --ring: 217 91% 60%;
+    --ring: 213 94% 72%;
   }
 }
 

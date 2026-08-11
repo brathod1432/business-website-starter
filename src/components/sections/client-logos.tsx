@@ -9,7 +9,7 @@ export function ClientLogos() {
         </p>
         <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
           {clientLogos.map((name) => (
-            <li key={name} className="font-display text-xl font-semibold text-muted-foreground/70">
+            <li key={name} className="font-display text-xl font-semibold text-muted-foreground">
               {name}
             </li>
           ))}

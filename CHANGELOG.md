@@ -3,6 +3,26 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.7.0] - 2026-08-11
+
+### Added
+
+- **Expanded E2E suite (48 → 97 tests)**: real-browser **axe-core accessibility scans** (WCAG
+  2.0/2.1 A+AA) across 13 pages + dark mode + the contact form with errors; exhaustive
+  sitemap-driven dynamic-route coverage; keyboard-operability tests; per-page metadata + OG image
+  - Breadcrumb/Article JSON-LD checks; no-console-error / no-failed-request smoke net; and
+    consent/reduced-motion/system-theme behavior. Added `@axe-core/playwright`.
+
+### Fixed
+
+- **Accessibility (WCAG AA) issues caught by the axe scans:**
+  - Star-rating element used `aria-label` without a role → added `role="img"`.
+  - Client-logo text (`text-muted-foreground/70`) failed color contrast → use full
+    `text-muted-foreground`.
+  - Accent color darkened (`174 84% 26%`) so white button text meets 4.5:1.
+  - Dark-mode primary retuned to a light blue with dark foreground so it passes both as a button
+    background and as `text-primary` on dark surfaces.
+
 ## [1.6.0] - 2026-08-11
 
 ### Added

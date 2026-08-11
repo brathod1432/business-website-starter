@@ -43,18 +43,25 @@ Coverage output is written to `coverage/` (lcov) and printed to the console.
 
 The Playwright suite (`e2e/`) exercises the app the way a real visitor and an operator would:
 
-| Spec                       | Covers                                                                                                                                                    |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `navigation.spec.ts`       | Header nav + active state, logo, footer links, skip-to-content focus                                                                                      |
-| `theme-and-mobile.spec.ts` | Dark-mode toggle + persistence, mobile menu open/close/navigate                                                                                           |
-| `home.spec.ts`             | Hero + all sections, single `h1`, FAQ accordion, service links                                                                                            |
-| `pages.spec.ts`            | Services + detail + breadcrumb, case studies + detail, pricing, about, legal                                                                              |
-| `blog.spec.ts`             | Index, topics cloud, post detail, related posts, clickable tags, tag pages, 404                                                                           |
-| `forms.spec.ts`            | Contact validation + success, newsletter validation + success                                                                                             |
-| `not-found.spec.ts`        | Unknown routes return a real 404                                                                                                                          |
-| `seo.spec.ts`              | Title/canonical/OG/Twitter, JSON-LD (Org/WebSite/LocalBusiness+rating/Service/Breadcrumb/Article), sitemap, robots, RSS, manifest, OG image, security.txt |
-| `security-and-api.spec.ts` | Hardened headers, CSRF 403, rate-limit headers + 429, invalid-payload 422, health, CSP report 204                                                         |
+| Spec                         | Covers                                                                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `navigation.spec.ts`         | Header nav + active state, logo, footer links, skip-to-content focus                                                                                      |
+| `theme-and-mobile.spec.ts`   | Dark-mode toggle + persistence, mobile menu open/close/navigate                                                                                           |
+| `home.spec.ts`               | Hero + all sections, single `h1`, FAQ accordion, service links                                                                                            |
+| `pages.spec.ts`              | Services + detail + breadcrumb, case studies + detail, pricing, about, legal                                                                              |
+| `blog.spec.ts`               | Index, topics cloud, post detail, related posts, clickable tags, tag pages, 404                                                                           |
+| `forms.spec.ts`              | Contact validation + success, newsletter validation + success                                                                                             |
+| `not-found.spec.ts`          | Unknown routes return a real 404                                                                                                                          |
+| `seo.spec.ts`                | Title/canonical/OG/Twitter, JSON-LD (Org/WebSite/LocalBusiness+rating/Service/Breadcrumb/Article), sitemap, robots, RSS, manifest, OG image, security.txt |
+| `metadata.spec.ts`           | Per-page distinct titles + canonicals, per-post OG image, `og:type=article`, Breadcrumb/Article JSON-LD                                                   |
+| `dynamic-routes.spec.ts`     | Every sitemap URL → 200 + single `h1`; unknown slug → 404 for each dynamic family                                                                         |
+| `keyboard.spec.ts`           | Keyboard-operable nav (focus + Enter), FAQ toggle, mobile menu                                                                                            |
+| `runtime-health.spec.ts`     | No console errors / no failed same-origin requests on every key page                                                                                      |
+| `consent-and-motion.spec.ts` | Consent banner hidden by default, reduced-motion renders content, system light/dark scheme                                                                |
+| `accessibility.spec.ts`      | **axe-core** WCAG 2.0/2.1 A+AA scans on 13 pages, dark mode, and the contact form with errors                                                             |
+| `security-and-api.spec.ts`   | Hardened headers, CSRF 403, rate-limit headers + 429, invalid-payload 422, health, CSP report 204                                                         |
 
+Accessibility scans use **@axe-core/playwright** and fail on any serious/critical violation.
 Because the in-memory rate limiter is per server process, E2E runs with a single worker and
 isolates API scenarios with distinct `X-Forwarded-For` values so rate-limit assertions are
 deterministic.
@@ -62,7 +69,7 @@ deterministic.
 ## Current status
 
 - **Jest:** 21 suites · 95 tests passing
-- **Playwright (e2e):** 48 tests passing (Chrome)
+- **Playwright (e2e):** 97 tests passing (Chrome), including axe-core a11y scans
 - **Coverage:** ~78% statements · ~82% lines (Jest)
 
 Coverage intentionally excludes the root `layout.tsx` and pure-presentational config. The
