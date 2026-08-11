@@ -49,7 +49,7 @@ and more.
 | Resilience | `error`, `global-error`, and `loading` route boundaries                                                                      |
 | Motion     | Framer Motion reveals that respect `prefers-reduced-motion`                                                                  |
 | Analytics  | GA4 + Microsoft Clarity, consent-gated; SPA `page_view`, conversion events, real-user Core Web Vitals                        |
-| Quality    | TypeScript strict, ESLint, Prettier, Jest + RTL + jest-axe, GitHub Actions CI                                                |
+| Quality    | TypeScript strict, ESLint, Prettier, Jest + RTL + jest-axe, Playwright E2E, GitHub Actions CI                                |
 
 ## Tech Stack
 
@@ -91,6 +91,7 @@ See [`docs/setup.md`](docs/setup.md) for full setup and environment details.
 | `npm run format`    | Prettier write                   |
 | `npm test`          | Run the Jest test suite          |
 | `npm run coverage`  | Run tests with a coverage report |
+| `npm run test:e2e`  | Build + run Playwright E2E tests |
 
 ## Screenshots
 

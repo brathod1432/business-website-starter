@@ -13,31 +13,57 @@ Testing is layered to match risk while keeping the suite fast:
 | Component      | Button, cards, FAQ, ContactForm behavior         | `tests/components/*`                   |
 | Page rendering | Pages render, single `h1`, dynamic params        | `tests/pages/*`                        |
 | Accessibility  | `jest-axe` on form, footer, pricing card         | `tests/a11y/accessibility.test.tsx`    |
+| End-to-end     | Full user journeys in a real browser             | `e2e/*.spec.ts`                        |
 
 ## Tooling
 
-- **Jest** with `next/jest` for Next-aware transforms.
+- **Jest** with `next/jest` for Next-aware transforms (unit/component/integration).
 - **React Testing Library** for user-centric component/page tests.
 - **@testing-library/user-event** for realistic interactions.
 - **jest-axe** for automated accessibility assertions.
+- **Playwright** for end-to-end tests, driving the **locally installed Chrome**
+  (`channel: 'chrome'` in `playwright.config.ts`) against a production build — no browser
+  download required.
 - jsdom polyfills for `matchMedia` and `IntersectionObserver` live in `jest.setup.ts`
   (required by Framer Motion).
 
 ## Running
 
 ```bash
-npm test              # run the whole suite
-npm run test:watch    # watch mode
-npm run coverage      # with coverage report (text + lcov)
+npm test              # Jest: unit / component / a11y
+npm run test:watch    # Jest watch mode
+npm run coverage      # Jest with coverage (text + lcov)
+npm run test:e2e      # Playwright: builds, serves on :3100, runs e2e/
+npm run test:e2e:ui   # Playwright interactive UI mode
 ```
 
 Coverage output is written to `coverage/` (lcov) and printed to the console.
 
+## End-to-end coverage
+
+The Playwright suite (`e2e/`) exercises the app the way a real visitor and an operator would:
+
+| Spec                       | Covers                                                                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `navigation.spec.ts`       | Header nav + active state, logo, footer links, skip-to-content focus                                                                                      |
+| `theme-and-mobile.spec.ts` | Dark-mode toggle + persistence, mobile menu open/close/navigate                                                                                           |
+| `home.spec.ts`             | Hero + all sections, single `h1`, FAQ accordion, service links                                                                                            |
+| `pages.spec.ts`            | Services + detail + breadcrumb, case studies + detail, pricing, about, legal                                                                              |
+| `blog.spec.ts`             | Index, topics cloud, post detail, related posts, clickable tags, tag pages, 404                                                                           |
+| `forms.spec.ts`            | Contact validation + success, newsletter validation + success                                                                                             |
+| `not-found.spec.ts`        | Unknown routes return a real 404                                                                                                                          |
+| `seo.spec.ts`              | Title/canonical/OG/Twitter, JSON-LD (Org/WebSite/LocalBusiness+rating/Service/Breadcrumb/Article), sitemap, robots, RSS, manifest, OG image, security.txt |
+| `security-and-api.spec.ts` | Hardened headers, CSRF 403, rate-limit headers + 429, invalid-payload 422, health, CSP report 204                                                         |
+
+Because the in-memory rate limiter is per server process, E2E runs with a single worker and
+isolates API scenarios with distinct `X-Forwarded-For` values so rate-limit assertions are
+deterministic.
+
 ## Current status
 
-- **Test suites:** 11 passed
-- **Tests:** 57 passed
-- **Coverage:** ~78% statements · ~82% lines · ~74% functions · ~63% branches
+- **Jest:** 21 suites · 95 tests passing
+- **Playwright (e2e):** 48 tests passing (Chrome)
+- **Coverage:** ~78% statements · ~82% lines (Jest)
 
 Coverage intentionally excludes the root `layout.tsx` and pure-presentational config. The
 `app/og` image route and analytics loaders are validated via build rather than jsdom (canvas /

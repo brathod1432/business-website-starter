@@ -11,6 +11,9 @@ import { buildMetadata } from '@/lib/seo';
 
 type Params = { params: Promise<{ tag: string }> };
 
+// All tags are known at build time; unknown tags return a real 404 (not a soft 200).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getTagSlugs().map((tag) => ({ tag }));
 }

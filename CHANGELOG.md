@@ -3,6 +3,21 @@
 All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.6.0] - 2026-08-11
+
+### Added
+
+- **End-to-end test suite (Playwright)** covering navigation, dark mode, mobile menu, all pages,
+  the blog taxonomy, forms, SEO/PWA endpoints, structured data, and the security/API contract —
+  48 tests driving the locally installed Chrome (no browser download). Scripts: `test:e2e`,
+  `test:e2e:ui`; CI runs it on every push/PR.
+
+### Fixed
+
+- **Soft 404s**: unknown dynamic URLs (`/service/*`, `/blog/*`, `/case-studies/*`, `/blog/tag/*`)
+  returned HTTP 200 while rendering the not-found UI. Added `dynamicParams = false` so unknown
+  slugs now return a real **404** — correct for SEO. (Caught by the new E2E suite.)
+
 ## [1.5.0] - 2026-08-10
 
 ### Added

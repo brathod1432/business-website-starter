@@ -11,6 +11,9 @@ import { buildMetadata } from '@/lib/seo';
 
 type Params = { params: Promise<{ slug: string }> };
 
+// All slugs are known at build time; unknown slugs return a real 404 (not a soft 200).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getCaseStudies().map((study) => ({ slug: study.slug }));
 }
